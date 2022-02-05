@@ -1,0 +1,67 @@
+% !TEX program=xelatex
+
+\documentclass{scrartcl}
+
+\usepackage{polyglossia, xltxtra}
+\setmainlanguage{german}
+\usepackage{amsmath,mathtools, amsthm, amssymb,cases}
+
+\usepackage{scrlayer -scrpage}
+\lohead{Mansur Daschaew \\ Janina Rastetter \\ Maren Raus}
+\cohead{Prävalenzabhängige Kontaktdaten}
+\rohead{14.02.2022}
+\pagestyle{scrheadings}
+
+
+%\newtheorem{defi}{Definition}[section]
+%\newtheorem{satz}[defi]{Satz}
+%\newtheorem{cor}[defi]{Korollar}
+%\newtheorem{bem}[defi]{Bemerkung}
+%\newtheorem{folg}[defi]{Folgerung}
+%\newenvironment{beweis}
+%	{\begin{proof}[Beweis]}
+%	{\end{proof}}
+
+\begin{document}
+
+\begin{center}
+\huge\textbf{Modellierung eines verallgemeinerten SEIR-Modells mit prävalenzabhängigen Kontaktraten}
+\end{center}
+
+\section{SEIR-Modell}
+
+Das SEIR-Modell wird durch das folgenden System gewöhnlicher Differentialgleichungen beschrieben:
+\begin{align*}
+\frac{dS}{dt} &= -\beta \frac{SI}{N} \\[10pt]
+\frac{dE}{dt} &= \beta \frac{SI}{N} - \alpha E \\[10pt]
+\frac{dI}{dt} &= \alpha E - \gamma I \\[10pt]
+\frac{dR}{dt} &= \gamma I 
+\end{align*}
+
+- verallgemeintertes SEIR Modell (GG-SEIR) kann flexibleres Verhalten einbeziehen \\
+- z.B. frühes sub-exponentielles Wachstum \\
+- Modell beschrieben durch obige DGL, Variablen erklären \\
+
+\section{Kontaktrate}
+- Variation der Kontaktrate $\beta(t) $ \\
+- $\beta(t) = \beta_0 [(1- \phi) f(t; \theta) + \phi]$ \\
+- der kleinstmögliche Wert für $\beta$ ist dann $\phi\beta_0$ \\
+
+- exponentielle, harmonische, und hyperbolische $\beta$- Funktionen, verschiedene Parameter [Plots] \\
+
+\section{weitere Abschnitte}
+
+
+
+
+
+
+
+
+
+\vspace*{\fill}
+\textbf{Literatur:}  \\
+P. Yan, G. Chowell: Quantitative Methods for Investigating Infectious Disease Outbreaks, 2019 \\
+A. King: Ordinary differential equations in R, https://kinglab.eeb.lsa.umich.edu/480/nls/de.html, Zugriff: 03.02.2022
+
+\end{document}
