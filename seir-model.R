@@ -1,5 +1,4 @@
 library(deSolve)
-
 library(tidyverse)
 
 beta_exp <- function(beta_zero, phi, q, t) {
@@ -17,6 +16,23 @@ beta_harm <- function(beta_zero, phi, q, nu, t) {
 beta_hyper <- function(beta_zero, phi, q, nu, t) {
   beta <- beta_zero * ((1 - phi) / (1 + q * nu * t) ^ (1/nu) + phi)
 }
+
+#oszilierend beta 
+#1 konstant oszillierend z.b. jahreszeiten abhängig
+beta_cos <- function(beta_zero, t, c1 = 0.25, c2 = 365) {
+  beta <- beta_zero + cos(t*2*pi/c2) * c1
+  return(beta)
+}
+#2 ansteigend z.b jahreszeiten abhängig mit ansteigender pandemiemüdigkeit 
+#3 absteigend (notwendigkeit??)
+#ansteigende beta 
+expdata <- data.frame(a0 = 0:100, a1 = beta_exp(0.5, 1.2, 0.1,0:100))
+ggr <- ggplot() + geom_line(data = expdata, aes(a0, a1),size =1)
+
+
+
+expadata <- data.frame(a0 = 1:365, a1 = expy(beta_zero = 1, x = 1:365))
+ggra <- ggplot() + geom_line(data = expadata, aes(a0, a1),size =1)
 
 closed.seir.model <- function (t, x, params) {
   ## first extract the state variables
@@ -57,7 +73,13 @@ closed.seir.model <- function (t, x, params) {
     dIdt <- alpha * E - gamma * I - gamma * D
     dRdt <- gamma * I + gamma * D
     dDdt <- delta * I - gamma * D
-  } else{ stop("Please choose method= 1 for const beta, method= 2 for beta_exp, method= 3 for beta_harm, method= 4 for beta_hyper ")}
+  } else if(method == 5){
+    dSdt <- -expy(beta_zero = beta_zero, x = t) * S * I/N
+    dEdt <- expy(beta_zero = beta_zero, x = t) * S * I/N - alpha * E 
+    dIdt <- alpha * E - gamma * I - gamma * D
+    dRdt <- gamma * I + gamma * D
+    dDdt <- delta * I - gamma * D
+  }else{ stop("Please choose method= 1 for const beta, method= 2 for beta_exp, method= 3 for beta_harm, method= 4 for beta_hyper ")}
   ## combine results into a single vector
   dxdt <- c(dSdt,dEdt,dIdt,dRdt,dDdt)
   ## return result as a list!
@@ -65,8 +87,8 @@ closed.seir.model <- function (t, x, params) {
 }
 
 #parameters
-beta_zero <- 0.4
-phi <- 0.4
+beta_zero <- 0.3
+phi <- 0.8
 q <- 0.05
 nu <- 0.5
 
@@ -77,17 +99,26 @@ nu <- 0.5
 params <- c(alpha=0.1, beta=0.7, gamma=0.1, delta=0.4, method= 1)
 times <- 0:800
 
-## 2
-params <- c(alpha=0.1, beta=0.7, gamma=0.1, delta=0.1, method= 1)
-times <-0:400
-
 params <- c(alpha=0.1, beta=0.7, gamma=0.1, delta=0.1, method= 2)
 times <- 0:600
 
 #times <- seq(from=0,to=60,by=1/60)
 
+## 2
+expy <- function(beta_zero,c1=0.06,c2=0.009,x){
+  beta <- beta_zero*((c1*abs(cos(c2*pi*x))*(log(x)))+1)
+  return(beta)
+}
+expy <- function(beta_zero,c1=0.05,c2=0.01,x){
+  beta <- beta_zero*((c1*(cos(c2*pi*x))^2*(log(x)))+1)
+  return(beta)
+}
+params <- c(alpha=0.1, beta=0.7, gamma=0.1, delta=0.1, method= 5)
+times <-1:300
 
-xstart <- c(S=999999,E = 0, I=1,R=0,D=0)
+
+
+xstart <- c(S=99999,E = 0, I=1,R=0,D=0)
 
 #solving the ode
 ode(
@@ -99,7 +130,7 @@ ode(
   as.data.frame() -> out
 
 #print the output from above (solution of the ode with the given parameters)
-out %>%
+out[c(1,3,4,6)] %>%
   gather(variable,value,-time) %>%
   ggplot(aes(x=time,y=value,color=variable))+
   geom_line(size=2)+
