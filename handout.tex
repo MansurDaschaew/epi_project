@@ -23,6 +23,8 @@
 
 \graphicspath{{img/}}
 
+%\definecolor{theme}{rgb}{0.14,0.43,0.74}
+
 
 %\newtheorem{defi}{Definition}[section]
 %\newtheorem{satz}[defi]{Satz}
@@ -39,15 +41,15 @@
 \huge\textbf{Modellierung eines verallgemeinerten SEIR-Modells mit prävalenzabhängigen Kontaktraten}
 \end{center}
 
-\section{SEI\textcolor{gray}{D}R-Modell}
+\section{SEI\textcolor{blue}{D}R-Modell}
 
-Das SEI\textcolor{gray}{D}R-Modell wird durch das folgende System gewöhnlicher Differentialgleichungen beschrieben:
+Das SEI\textcolor{blue}{D}R-Modell wird durch das folgende System gewöhnlicher Differentialgleichungen beschrieben:
 \begin{align*}
 \frac{dS}{dt} &= -\beta \frac{SI}{N} \\[10pt]
 \frac{dE}{dt} &= \beta \frac{SI}{N} - \alpha E \\[10pt]
-\frac{dI}{dt} &= \alpha E - \gamma I \textcolor{gray}{- \delta I} \\[10pt] 
-\frac{dR}{dt} &= \gamma I \textcolor{gray}{+ \gamma D} \\[10pt] 
-\textcolor{gray}{\frac{dD}{dt}} &\textcolor{gray}{= \delta I - \gamma D}
+\frac{dI}{dt} &= \alpha E - \gamma I \textcolor{blue}{- \delta I} \\[10pt] 
+\frac{dR}{dt} &= \gamma I \textcolor{blue}{+ \gamma D} \\[10pt] 
+\textcolor{blue}{\frac{dD}{dt}} &\textcolor{blue}{= \delta I - \gamma D}
 \end{align*}
 
 \begin{tabular}{rl}
@@ -127,7 +129,7 @@ Das SEI\textcolor{gray}{D}R-Modell wird durch das folgende System gewöhnlicher 
 		\centering
 		\begin{tabular}{@{}ccc@{}}
 			\toprule
-			$\delta$ & Verbleibende S (in \%) & I und E kleiner 1, ab\\ 
+			$\delta$ & Verbleibende S (in \%) & I und E kleiner 1, ab (in Tagen)\\ 
 			\midrule
 			 $\delta_{ur} \cdot 2^1$ & 1.252596 & 212 (+ 36) \\ 
 			 $\delta_{ur} \cdot 2^2$ & 2.687945 & 196 (+ 36)\\  
@@ -154,7 +156,7 @@ Das SEI\textcolor{gray}{D}R-Modell wird durch das folgende System gewöhnlicher 
 		\centering
 		\begin{tabular}{@{}ccc@{}}
 			\toprule
-			$\beta$ & Verbleibende S (in \%) & I und E kleiner 1, ab\\ 
+			$\beta$ & Verbleibende S (in \%) & I und E kleiner 1, ab  (in Tagen)\\ 
 			\midrule
 			$\beta_{ur} * 2^{-1}$ & 11.3365 & 338 (+ 36) \\ 
 			$\beta_{ur} * 2^{-2}$  & 65.28979 &  1184 (+ 36)\\  
@@ -169,16 +171,16 @@ Das SEI\textcolor{gray}{D}R-Modell wird durch das folgende System gewöhnlicher 
 	\end{figure}
 	\begin{arrowlist}
 		\item Kontaktreduktion verhindert Infektionen, zieht die Epidemie aber in die Länge
-		\item Um eine Durchseuchung zu verhindern, müssten die Kontakte fast drei Jahre lang reduziert werden
+		\item Um eine Durchseuchung zu verhindern, müssten die Kontakte etwa 2.5 Jahre lang reduziert werden
 	\end{arrowlist}
 
-\subsection{Strategie 4: Kontaktreduktion und Massentest}
+\subsection{Strategie 4: Kontaktreduktion und Massentests}
 	\begin{table}[h]
 		\caption{Verlauf mit verstärktem Testen und Kontaktreduktion}
 		\centering
 		\begin{tabular}{@{}ccc@{}}
 			\toprule
-			$\delta$ & Verbleibende S (in \%) & I und E kleiner 1, ab\\ 
+			$\delta$ & Verbleibende S (in \%) & I und E kleiner 1, ab  (in Tagen)\\ 
 			\midrule
 			 $\delta_{ur} \cdot 2^1$ & 99.88242 & 456 (+ 36) \\ 
 			 $\delta_{ur} \cdot 2^2$ & 99.92746 & 230 (+ 36)\\  

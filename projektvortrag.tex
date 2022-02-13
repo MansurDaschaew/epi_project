@@ -33,6 +33,8 @@
 %inner color theme: lilly, orchid, rose
 %outer color theme: whale, seahorse, dolphin
 
+\definecolor{theme}{rgb}{0.14,0.43,0.74}
+
 \setbeamerfont{frametitle}{size=\normalsize} %Dieser Werk setzt die Schriftgröße des Framtitle fest (Standard ist etwas größer)
 \setbeamertemplate{navigation symbols}{}
 \graphicspath{{img/}}
@@ -61,7 +63,7 @@ SEIR-Modell:
 	S & susceptible \\
 	E & exposed \\
 	I & infectious \\
-	\textcolor{gray}{D} & \textcolor{gray}{detected} \\
+	\textcolor{theme}{D} & \textcolor{theme}{detected} \\
 	R & recovered \\
 	\end{tabular}
 \end{column}
@@ -70,9 +72,9 @@ SEIR-Modell:
 		\begin{align*}
 		\frac{dS}{dt} &= -\beta \frac{SI}{N} \\[10pt]
 		\frac{dE}{dt} &= \beta \frac{SI}{N} - \alpha E \\[10pt]
-		\frac{dI}{dt} &= \alpha E - \gamma I \textcolor{gray}{ - \delta I} \\[10pt]
-		\textcolor{gray}{\frac{dD}{dt}} &\textcolor{gray}{= \delta I - \gamma D} \\[10pt]
-		\frac{dR}{dt} &= \gamma I \textcolor{gray}{+ \gamma D }
+		\frac{dI}{dt} &= \alpha E - \gamma I \textcolor{theme}{ - \delta I} \\[10pt]
+		\textcolor{theme}{\frac{dD}{dt}} &\textcolor{theme}{= \delta I - \gamma D} \\[10pt]
+		\frac{dR}{dt} &= \gamma I \textcolor{theme}{+ \gamma D }
 		\end{align*}
 \end{column}
 \end{columns}
@@ -249,6 +251,12 @@ Startwerte:  \begin{itemize}
 
 
 \section{Fallbeispiel Xi'an}
+
+\begin{frame}
+\centering
+ \huge\textbf{Fallbeispiel Xi'an}
+\end{frame}
+
 \begin{frame}
 	\frametitle{Kontext und Begründung der Auswahl}
 	China...
@@ -298,7 +306,7 @@ Startwerte:  \begin{itemize}
 	\frametitle{Parameter}
 	\begin{itemize}
 		\item R-Wert $\approx 5.5$
-		\item $\alpha = \nicefrac{1}{2}$ (mittlere Latzenzeit $\approx 4$, ansteckend etwa zwei Tag vor Auftreten von Symptomen)
+		\item $\alpha = \nicefrac{1}{2}$ (mittlere Inkubationszeit $\approx 4$, ansteckend etwa zwei Tag vor Auftreten von Symptomen)
 		\item $\gamma = \nicefrac{1}{12}$
 		\item $\beta \approx \gamma \cdot R = \nicefrac{5.5}{12} = 0.468$
 		\item $\phi \approx \nicefrac{\gamma}{\beta} = \nicefrac{1}{5.5} $
@@ -331,7 +339,7 @@ Startwerte:  \begin{itemize}
 		\item $S = 12 996 450$
 		\item $E = 1097$
 		\item $I = 1731$
-		\item $C = 56$
+		\item $D = 56$
 		\item $R = 666$		
 	\end{itemize}
 \end{frame}
@@ -362,7 +370,7 @@ Startwerte:  \begin{itemize}
 	\vspace{0.5cm}
 	\begin{itemize}
 		\item Verbleibende S: 99439.98 (0.7649229\%)\\	$\Rightarrow$ Durchseuchung
-		\item Schritte, bis E und I kleiner 1: 260
+		\item Schritte, bis E und I kleiner 1: 260 (ca. 9 Monate)
 	\end{itemize}
 \end{frame}
 
@@ -432,7 +440,7 @@ Startwerte:  \begin{itemize}
 	\end{table}
 	\begin{arrowlist}
 		\item Kontaktreduktion verhindert Infektionen, zieht die Epidemie aber in die Länge
-		\item Um eine Durchseuchung zu verhindern, müssten die Kontakte fast drei Jahre lang reduziert werden
+		\item Um eine Durchseuchung zu verhindern, müssten die Kontakte etwa 2.5 Jahre lang reduziert werden
 	\end{arrowlist}
 \end{frame}
 
@@ -487,8 +495,8 @@ Startwerte:  \begin{itemize}
 	\end{table}
 	%\vspace{0.5cm}
 	\begin{arrowlist}
-		\item Bei extremer Kontaktreduktion wirkt sich die Testeffizienz kaum auf die Anzahl der Infektionen aus, dafür aber sehr stark auf die erforderliche Dauer der Beschränkungen
-		\item Die Testeffizienz müsste mindestens um Faktor $2^4$ gesteigert werden, um die Dauer der Einschränkungen gering zu halten (ein bis zwei Monate)
+		\item Testeffizienz wirkt sich kaum auf die Anzahl der Infektionen aus, dafür aber sehr stark auf die erforderliche Dauer der Beschränkungen
+		\item Testeffizienz müsste mindestens um Faktor $2^4$ gesteigert werden, um Einschränkungen auf ein bis zwei Monate zu beschränken
 	\end{arrowlist}
 \end{frame}
 
@@ -561,8 +569,8 @@ Startwerte:  \begin{itemize}
 	\end{table}
 	%\vspace{0.5cm}
 	\begin{arrowlist}
-		\item Fehler bei Parameterwahl, in Xi'an gab es insgesamt nur etwa 2000 Fälle
-		\item Vermutung zur Fehlerquelle:\\Lockdown in Xi'an bei $t=14$, in Simulation bei $t=36$\\Schätzung von $\delta$ darf sich nicht zu stark auf den Anfangszeitpunkt der Maßnahmen auswirken
+		\item In Xi'an gab es insgesamt nur etwa 2000 Fälle... Fehler bei der Parameterwahl?
+		\item Vermutung zur Fehlerquelle: Mangel an Daten
 	\end{arrowlist}
 \end{frame}
 
