@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[german]{babel}
-\usepackage{graphicx}
+\usepackage{graphicx, subcaption}
 \usepackage[osf]{libertine}
 \usepackage{microtype}
 \usepackage{booktabs}
@@ -37,7 +37,7 @@
 \setbeamertemplate{navigation symbols}{}
 \graphicspath{{img/}}
 
-\title{Prävalenzabhägige Kontaktraten}
+\title{Modellierung eines verallgemeinterten SEIR-Modells mit prävalenzabhängigen Kontaktraten}
 
 \date{14. Februar 2022} %wenn man hier "\today" einträgt, bekommt man das aktuelle Datum
 \author{Mansur Daschaew, Janina Rastetter und Maren Raus}
@@ -47,6 +47,206 @@
 \maketitle
 
 \tableofcontents
+
+%allgemeiner Teil
+\section{SEIR-Modell}
+
+\subsection{ODEs}
+\begin{frame}
+	\frametitle{Differentialgleichungen}
+SEIR-Modell:
+\begin{columns}
+\begin{column}{0.2\textwidth}
+	\begin{tabular}{rl}
+	S & susceptible \\
+	E & exposed \\
+	I & infectious \\
+	\textcolor{gray}{D} & \textcolor{gray}{detected} \\
+	R & recovered \\
+	\end{tabular}
+\end{column}
+\begin{column}{0.2\textwidth} 
+
+		\begin{align*}
+		\frac{dS}{dt} &= -\beta \frac{SI}{N} \\[10pt]
+		\frac{dE}{dt} &= \beta \frac{SI}{N} - \alpha E \\[10pt]
+		\frac{dI}{dt} &= \alpha E - \gamma I \textcolor{gray}{ - \delta I} \\[10pt]
+		\textcolor{gray}{\frac{dD}{dt}} &\textcolor{gray}{= \delta I - \gamma D} \\[10pt]
+		\frac{dR}{dt} &= \gamma I \textcolor{gray}{+ \gamma D }
+		\end{align*}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Parameter}
+
+	\begin{tabular}{rl}
+		Übergangsrate $\alpha$:& Kehrwert der mittlere Latenzzeit \\
+		Transmissionsrate $\beta$:& Übertragungen pro S-I Kontakt pro Zeit \\
+		Erholungsrate $\gamma$:& Kehrwert der mittleren infektiösen Zeit\\
+		Testrate $\delta$: &  Testrate für positive Individuen \\
+						& $\times$ Rate der positiven Testergebnisse
+	\end{tabular}
+
+\vspace{1cm}
+Schätzung für Transmissionsrate (zu Beginn der Epidemie): 
+\begin{columns}
+\begin{column}{0.2\textwidth}
+\[\beta = \frac{R_0}{\gamma}\]
+\end{column}
+\begin{column}{0.5\textwidth}
+($R_0$ Reproduktionszahl)
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\subsection{ Simulation} 
+
+\begin{frame}
+	\frametitle{Simulation}
+Startwerte:  \begin{itemize}
+				\item Populationsgröße N
+				\item S = N-1,  I = 1, E = R = 0
+			\end{itemize}
+
+\begin{center}
+ \includegraphics[width = \textwidth]{epi}
+\end{center}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\section{Simulation eines Lockdowns}
+
+\begin{frame}
+\centering
+ \huge\textbf{Simulation eines Lockdowns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Simulation eines Lockdowns}
+
+\begin{itemize}
+\item Kontaktrate verändert sich nicht kontinuierlich, sondern abrupt
+\item Zeitpunkt ist von der Inzidenz abhängig
+\item Bedingung an $\beta$: 
+	$\beta(t) =  \begin{cases} 
+					\phi \beta_0 \text{ falls } I(t) > \tau N \\
+					\beta_0 \text{\quad sonst}
+				\end{cases}$
+	, wobei $\phi \in (0,1)$  und $\tau \in (0,1)$
+\end{itemize}
+
+\begin{center}
+ \includegraphics[width = 0.6\textwidth]{stepfunction}
+\end{center}
+
+
+\end{frame}
+
+
+\subsection{Auswirkungen auf den Epidemieverlauf}
+\begin{frame}
+	\frametitle{Auswirkungen auf den Epidemieverlauf}
+
+\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{I}
+		\caption{Infizierte}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.495\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{thres-I-novlines}
+		\caption{Infizierte bei Lockdown für $I(t) > 0.05N$}
+        \end{subfigure}
+        \vskip\baselineskip
+	\begin{subfigure}[b]{0.495\textwidth}  
+		\centering
+		\includegraphics[width=\textwidth]{epi}  
+		\caption{Pandemieverlauf \\ \ }
+	\end{subfigure}
+        \begin{subfigure}[b]{0.455\textwidth}   
+            \centering 
+            \includegraphics[width=\textwidth]{thres-epi}  
+		\caption{Epidemieverlauf bei Lockdown für $I(t) > 0.05N$}           
+        \end{subfigure}
+ \end{figure}
+\end{frame}
+
+\subsection{mehrstufiger Lockdown}
+\begin{frame}
+	\frametitle{mehrstufiger Lockdown}
+	\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{thres2-I}
+		\caption{Infizierte}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.495\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{thres2-epi}
+		\caption{Epidemieverlauf}
+        \end{subfigure}
+	\end{figure}
+
+\end{frame}
+\subsection{Lockdown anhand von Fallzahlen}
+
+\begin{frame}
+	\frametitle{Lockdown anhand von tatsächlichen Fallzahlen}
+	\begin{itemize}
+		\item Einsetzen der Reduktion der Kontaktrate nach Werten von $D(t)$ (detected)
+		\item niedrigere Werte, kleinere Schranke		
+	\end{itemize}
+	\begin{figure}
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{thres-E}
+		\caption{Fallzahlen (detected cases $D$) mit Schranke $D(t) > 0.01N$}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.495\textwidth}  
+            \centering 
+            \includegraphics[width=\textwidth]{thres-E-epi}
+		\caption{Epidemieverlauf \\ \ }
+        \end{subfigure}
+	\end{figure}
+
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Diskussion}
+
+	 \begin{center}
+            \includegraphics[width=0.7\textwidth]{thres-I}
+	\end{center}
+
+\begin{itemize}
+\item Schranke $\tau N$ muss passend gewählt werden
+\item Zeitspanne zwischen Beginn des Lockdown und Peak 
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 \section{Fallbeispiel Xi'an}
 \begin{frame}
